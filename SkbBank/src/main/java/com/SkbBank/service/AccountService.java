@@ -1,31 +1,27 @@
-package com.SkbBank.controller;
+package com.SkbBank.service;
 
 import com.SkbBank.model.Account;
-import com.SkbBank.service.AccountService;
+import com.SkbBank.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@RestController
-@RequestMapping("/accounts")
-public class AccountController {
+@Service
+public class AccountService {
 
     @Autowired
-    private AccountService accountService;
+    private AccountRepository accountRepository;
 
-    @GetMapping
     public List<Account> getAllAccounts() {
-        return accountService.getAllAccounts();
+        return accountRepository.findAll();
     }
 
-    @GetMapping("/{id}")
-    public Account getAccount(@PathVariable Long id) {
-        return accountService.getAccountById(id);
+    public Account getAccountById(Long id) {
+        return accountRepository.findById(id).orElse(null);
     }
 
-    @PostMapping
-    public Account createAccount(@RequestBody Account account) {
-        return accountService.saveAccount(account);
+    public Account saveAccount(Account account) {
+        return accountRepository.save(account);
     }
 }
